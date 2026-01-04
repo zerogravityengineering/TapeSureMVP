@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: tapsure-backend
+    env: python
+    plan: free
+    pythonVersion: 3.13
+    buildCommand: "pip install -r python-requirements.txt"
+    startCommand: "uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT"
+    autoDeploy: true
+    envVars:
+      - key: POS_TENANT_SECRETS
+        value: '{"client":"dev-client","merchant":"dev-merchant","insurer":"dev-insurer"}'
+      - key: POS_QR_ENFORCEMENT
+        value: "auto"
+      - key: POS_QR_MAX_AGE_SECONDS
+        value: "900"
+      - key: POS_QR_NONCE_TTL_SECONDS
+        value: "3600"
+      - key: POS_REQUIRE_QR
+        value: "0"
+      - key: POS_QR_MAX_FUTURE_SKEW_SECONDS
+        value: "60"
+      - key: LLM_BASE_URL
+        value: ""
+      - key: LLM_API_KEY
+        value: ""
+      - key: LLM_MODEL
+        value: "llama3.1:8b"
+      - key: OPENAI_API_KEY
+        value: ""
+      - key: FRONTEND_ORIGIN
+        value: "https://harmonious-donut-600f5d.netlify.app"
+      - key: VITE_API_URL
+        value: "https://tapsure-tib5.onrender.com"
+      - key: TAPSURE_DEBUG_HTTP
+        value: "0"

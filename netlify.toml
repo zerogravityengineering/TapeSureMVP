@@ -1,0 +1,14 @@
+[build]
+command = "npm --prefix frontend-v2 install && npm --prefix frontend-v2 run build"
+publish = "frontend-v2/dist"
+ignore = "git diff --quiet HEAD^ HEAD -- backend/ Procfile render.yaml start.sh root_app.py build.sh python-requirements.txt || exit 1"
+
+[build.environment]
+NODE_VERSION = "18"
+VITE_API_URL = "https://tapsure-tib5.onrender.com"
+VITE_POS_REQUIRE_QR = "0"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
