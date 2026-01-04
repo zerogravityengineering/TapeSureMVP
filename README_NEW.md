@@ -1,4 +1,18 @@
+
 # TapSure Agentic MVP
+
+---
+**© 2026 Zero Gravity Engineering (Pty) Ltd. All rights reserved worldwide.**
+
+**Chief Architect & Author:** Zebbediah Winston Beck
+**Genesis Core Team:** Founding contributors
+
+**NOTICE:**
+All code, designs, and documentation in this repository are the exclusive property of Zero Gravity Engineering (Pty) Ltd. No changes, contributions, or derivative works may be made—even by Genesis Core Team or founding members—unless a Non-Disclosure Agreement (NDA) is signed and approved by the Steering Committee of Zero Gravity Engineering (Pty) Ltd. This policy is binding for all contributors, including core engineers, and applies to all current and future contributions. Any attempt to modify, use, or disclose any part of this application without explicit written consent is strictly prohibited.
+
+**Contributors may only join this project by invitation and after signing an NDA.**
+
+---
 
 An event-driven multi-agent insurance MVP with intelligent chatbot. Upload a receipt, chat about purchases, get instant coverage recommendations, and confirm protection—all with code-gated access.
 
