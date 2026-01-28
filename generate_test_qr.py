@@ -6,9 +6,10 @@ Genesis Core Team: Founding contributors
 
 NOTICE: No changes, contributions, or derivative works may be made—even by Genesis Core Team or founding members—unless a Non-Disclosure Agreement (NDA) is signed and approved by the Steering Committee of Zero Gravity Engineering (Pty) Ltd.
 """
-Generate valid QR code images for testing locally.
+"""Generate valid QR code images for testing locally."""
 
 import json
+import os
 import sys
 import time
 from io import BytesIO
@@ -19,14 +20,17 @@ from PIL import Image
 
 sys.path.insert(0, 'backend')
 from app.pos_qr import build_token
+from app.config import get_pos_tenant_secrets
 
-# Test tenant IDs from .env
-TENANT_IDS = ["client", "merchant", "insurer"]
-SECRETS = {
-    "client": "dev-client",
-    "merchant": "dev-merchant", 
-    "insurer": "dev-insurer"
-}
+# Load secrets from environment (never hardcode!)
+SECRETS = get_pos_tenant_secrets()
+if not SECRETS:
+    print("ERROR: POS_TENANT_SECRETS not configured in environment.")
+    print("Set POS_TENANT_SECRETS in your .env file or environment variables.")
+    print('Example: POS_TENANT_SECRETS=\'{"client":"YOUR_SECRET","merchant":"YOUR_SECRET","insurer":"YOUR_SECRET"}\'')
+    sys.exit(1)
+
+TENANT_IDS = list(SECRETS.keys())
 
 def make_qr_png(text: str) -> bytes:
     """Generate QR code PNG bytes."""
@@ -78,7 +82,6 @@ def generate_qr_codes():
         
         print(f"\n✓ Generated: {filename}")
         print(f"  Tenant ID: {tenant_id}")
-        print(f"  Secret: {secret}")
         print(f"  Token (first 50 chars): {token[:50]}...")
         print(f"  Payload: {json.dumps(payload, indent=2)}")
     

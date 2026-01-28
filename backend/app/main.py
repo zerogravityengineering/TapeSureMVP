@@ -33,7 +33,7 @@ app.add_middleware(APIDebugLoggingMiddleware, enabled=DEBUG_HTTP)
 origins = [os.getenv("FRONTEND_ORIGIN", "http://localhost:5173"), "http://localhost:8000", "http://127.0.0.1:5173"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # DEV: allow all to simplify running static frontends on any port
+    allow_origins=origins,  # Use configured origins only (security fix)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -79,7 +79,12 @@ async def analyze_receipt(request: Request, receipt: UploadFile = File(...)):
     if not (content_type.startswith("image/") or content_type in {"application/octet-stream"}):
         raise HTTPException(415, "Unsupported content type")
 
-    data = await receipt.read()
+    # Prevent memory/DoS issues from unbounded uploads.
+    # Prefer a dedicated limit, but fall back to the POS QR limit if configured.
+    max_bytes = int(os.getenv("RECEIPT_MAX_BYTES", os.getenv("POS_QR_MAX_BYTES", "3000000")))
+    data = await receipt.read(max_bytes + 1)
+    if len(data) > max_bytes:
+        raise HTTPException(413, "File too large")
     try:
         pos_qr_verified = False
         pos_qr_reason: str | None = None

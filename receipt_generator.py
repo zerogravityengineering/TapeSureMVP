@@ -6,8 +6,8 @@ Genesis Core Team: Founding contributors
 
 NOTICE: No changes, contributions, or derivative works may be made—even by Genesis Core Team or founding members—unless a Non-Disclosure Agreement (NDA) is signed and approved by the Steering Committee of Zero Gravity Engineering (Pty) Ltd.
 """
-Generate realistic receipt images with embedded QR codes for different user tiers.
-
+"""Generate realistic receipt images with embedded QR codes for different user tiers.
+ """
 import json
 import sys
 import time
@@ -39,12 +39,9 @@ TIERS = {
     "premium": UserTier("Premium", 10, 100, 10000.0),
 }
 
-# Tenant secrets
-SECRETS = {
-    "client": "dev-client",
-    "merchant": "dev-merchant",
-    "insurer": "dev-insurer",
-}
+# Load tenant secrets from environment (never hardcode!)
+from app.config import get_pos_tenant_secrets
+SECRETS = get_pos_tenant_secrets()
 
 # Sample merchants for variety
 MERCHANTS = [
